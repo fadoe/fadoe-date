@@ -68,6 +68,7 @@ class DateTime extends \DateTime
      * set timezone
      *
      * @param \DateTimeZone|string $timezone
+     * @return $this|\DateTime
      */
     public function setTimezone($timezone)
     {
@@ -85,7 +86,7 @@ class DateTime extends \DateTime
      */
     public function getTimezone()
     {
-        return new Date\DateTimeZone(parent::getTimezone()->getName());
+        return new DateTimeZone(parent::getTimezone()->getName());
     }
 
     /**
@@ -96,7 +97,7 @@ class DateTime extends \DateTime
     public function getFirstDayOfWeek()
     {
         $dow = $this->format('N');
-        $date = clone $this;
+        $date = $this->copy();
         $dateInterval = new \DateInterval('P' . ($dow - 1) . 'D');
         $date->sub($dateInterval);
         return (int) $date->format('d');
@@ -108,9 +109,9 @@ class DateTime extends \DateTime
      */
     public function getLastDayOfWeek()
     {
-        $dow = $this->format('N');
-        $date = clone $this;
-        $dateInterval = new \DateInterval('P' . (7 - $dow) . 'D');
+        $dayOfWeek = $this->format('N');
+        $date = $this->copy();
+        $dateInterval = new \DateInterval('P' . (7 - $dayOfWeek) . 'D');
         $date->add($dateInterval);
         return (int) $date->format('d');
     }
@@ -130,16 +131,16 @@ class DateTime extends \DateTime
      */
     public function getWeeksInMonth()
     {
-        $tmpDate = clone $this;
+        $tmpDate = $this->copy();
         $tmpDate->setDate($tmpDate->format('Y'), $tmpDate->format('m'), 1);
-        $firstWeek = $tmpDate->format('W');
+        $firstWeek = (int) $tmpDate->format('W');
         $lastDay = $tmpDate->format('t');
         $tmpDate->setDate($tmpDate->format('Y'), $tmpDate->format('m'), $lastDay);
-        $lastWeek = $tmpDate->format('W');
+        $lastWeek = (int) $tmpDate->format('W');
 
         if ($lastWeek < $firstWeek) {
             $tmpDate->setDate($tmpDate->format('Y'), $tmpDate->format('m'), $lastDay - 5);
-            $lastWeek = $tmpDate->format('W') + 1;
+            $lastWeek = (int) $tmpDate->format('W') + 1;
         }
 
         return ($lastWeek - $firstWeek + 1);
@@ -153,6 +154,23 @@ class DateTime extends \DateTime
     public function getWeekdayInMonth()
     {
         return (ceil($this->format('d') / 7));
+    }
+
+
+    public function age($from = null)
+    {
+        if (null === $from) {
+            $from = new $this;
+        }
+        return $this->diff($from)->format('%r%y');
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function copy()
+    {
+        return clone $this;
     }
 
     /**

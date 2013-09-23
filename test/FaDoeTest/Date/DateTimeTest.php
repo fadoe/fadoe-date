@@ -61,6 +61,17 @@ class DateTimeTest extends TestCase
 
     }
 
+    public function testAge()
+    {
+        $date = new DateTime();
+        $date1 = new DateTime('2010-10-10');
+        $date2 = new DateTime('2013-10-31');
+
+        $this->assertEquals(0, $date->age());
+        $this->assertEquals(3, $date1->age($date2));
+        $this->assertEquals(-3, $date2->age($date1));
+    }
+
     public function testTimezone()
     {
         //$date = new DateTime();
