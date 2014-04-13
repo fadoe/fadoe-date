@@ -1,5 +1,4 @@
 <?php
-
 namespace FaDoe\Date;
 
 class DateTime extends \DateTime
@@ -12,7 +11,7 @@ class DateTime extends \DateTime
      *
      * @var int
      */
-    private $defaultFormat = DATE_ISO8601;
+    private $defaultFormat = 'Y-m-d H:i:s';
 
     /**
      * set date
@@ -25,6 +24,7 @@ class DateTime extends \DateTime
     public function setDate($year, $month, $day)
     {
         parent::setDate($year, $month, $day);
+
         return $this;
     }
 
@@ -37,6 +37,7 @@ class DateTime extends \DateTime
     public function setDefaultFormat($defaultFormat)
     {
         $this->defaultFormat = $defaultFormat;
+
         return $this;
     }
 
@@ -61,6 +62,7 @@ class DateTime extends \DateTime
         if (null !== $format) {
             return parent::format($format);
         }
+
         return parent::format($this->getDefaultFormat());
     }
 
@@ -76,6 +78,7 @@ class DateTime extends \DateTime
             $timezone = new \DateTimeZone($timezone);
         }
         parent::setTimezone($timezone);
+
         return $this;
     }
 
@@ -96,10 +99,11 @@ class DateTime extends \DateTime
      */
     public function getFirstDayOfWeek()
     {
-        $dow = $this->format('N');
+        $dayOfWeek = $this->format('N');
         $date = $this->copy();
-        $dateInterval = new \DateInterval('P' . ($dow - 1) . 'D');
+        $dateInterval = new \DateInterval('P' . ($dayOfWeek - 1) . 'D');
         $date->sub($dateInterval);
+
         return (int) $date->format('d');
     }
 
@@ -113,6 +117,7 @@ class DateTime extends \DateTime
         $date = $this->copy();
         $dateInterval = new \DateInterval('P' . (7 - $dayOfWeek) . 'D');
         $date->add($dateInterval);
+
         return (int) $date->format('d');
     }
 
@@ -156,16 +161,25 @@ class DateTime extends \DateTime
         return (ceil($this->format('d') / 7));
     }
 
-
+    /**
+     * Return differences in years.
+     *
+     * @param null|DateTime $from
+     *
+     * @return string
+     */
     public function age($from = null)
     {
         if (null === $from) {
             $from = new $this;
         }
+
         return $this->diff($from)->format('%r%y');
     }
 
     /**
+     * Get a clone from this date time object
+     *
      * @return DateTime
      */
     public function copy()
@@ -174,7 +188,7 @@ class DateTime extends \DateTime
     }
 
     /**
-     * get datetime formated
+     * get datetime formatted
      *
      * @return string
      */

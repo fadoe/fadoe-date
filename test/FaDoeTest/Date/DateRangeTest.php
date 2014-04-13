@@ -1,14 +1,5 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: falk
- * Date: 17.09.13
- * Time: 22:29
- * To change this template use File | Settings | File Templates.
- */
-
 namespace FaDoeTest\Date;
-
 
 use FaDoe\Date\DateRange;
 
@@ -128,6 +119,70 @@ class DateRangeTest extends \PHPUnit_Framework_TestCase
     public function testConstructorThrowsExceptionByInvalidParameters()
     {
         $dateRange = new DateRange(array(), array());
+    }
+
+    /**
+     * @expectedException \FaDoe\Date\Exception\InvalidArgumentException
+     */
+    public function testThrowExceptionIfSetNotADateObject()
+    {
+        $dateRange = new DateRange();
+        $dateRange->setTo(null);
+    }
+
+    public function testIterateOverDates()
+    {
+        $from = '2014-04-10';
+        $to = '2014-04-12';
+        $dateRange = new DateRange($from, $to);
+
+        $this->assertEquals($from, $dateRange->current()->format('Y-m-d'));
+        $this->assertEquals(0, $dateRange->key());
+        $dateRange->next();
+        $this->assertEquals(1, $dateRange->key());
+        $this->assertTrue($dateRange->valid());
+        $dateRange->next();
+        $dateRange->next();
+        $this->assertFalse($dateRange->valid());
+        $dateRange->rewind();
+        $this->assertEquals($from, $dateRange->current()->format('Y-m-d'));
+        $this->assertEquals(0, $dateRange->key());
+    }
+
+    /**
+     * @expectedException \FaDoe\Date\Exception\InvalidArgumentException
+     */
+    public function testOffsetSetThrowsException()
+    {
+        $dateRange = new DateRange();
+        $dateRange->offsetSet(0, '2014-04-13');
+    }
+
+    /**
+     * @expectedException \FaDoe\Date\Exception\InvalidArgumentException
+     */
+    public function testOffsetUnsetThrowsException()
+    {
+        $dateRange = new DateRange('2014-04-12', '2014-04-13');
+        $dateRange->offsetUnset(0);
+    }
+
+    public function testOffsetMethodsDefaultValues()
+    {
+        $dateTime = new DateRange();
+        $this->assertFalse($dateTime->offsetExists(0));
+        $this->assertNull($dateTime->offsetGet(0));
+    }
+
+    public function testOffsetMethodsInAction()
+    {
+        $dateTime = new DateRange('2014-04-12', '2014-04-14');
+        $this->assertEquals('2014-04-12', $dateTime->offsetGet(0)->format('Y-m-d'));
+        $this->assertTrue($dateTime->offsetExists(0));
+        $this->assertEquals('2014-04-13', $dateTime->offsetGet(1)->format('Y-m-d'));
+        $this->assertTrue($dateTime->offsetExists(1));
+        $this->assertEquals('2014-04-14', $dateTime->offsetGet(2)->format('Y-m-d'));
+        $this->assertTrue($dateTime->offsetExists(2));
     }
 
 }

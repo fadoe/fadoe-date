@@ -1,7 +1,5 @@
 <?php
-
 namespace FaDoe\Date;
-
 
 use FaDoe\Date\Exception\InvalidArgumentException;
 
@@ -151,7 +149,6 @@ class DateRange implements \Iterator, \ArrayAccess
      */
     public function setTo($to)
     {
-
         if (is_string($to)) {
             $to = new \DateTime($to);
         }
@@ -253,11 +250,11 @@ class DateRange implements \Iterator, \ArrayAccess
     /**
      * @param integer $offset Offset
      *
-     * @return null
+     * @throws Exception\InvalidArgumentException
      */
     public function offsetUnset($offset)
     {
-        unset($this->dates[$offset]);
+        throw new InvalidArgumentException('Unset a date is not supported.');
     }
 
     /**

@@ -8,6 +8,20 @@ use FaDoe\Date\DateTime;
 class DateTimeTest extends TestCase
 {
 
+    public function testChangingDefaultDateFormat()
+    {
+        $dateTime = new DateTime('13.04.2014 10:10:10');
+        $this->assertEquals('2014-04-13 10:10:10', $dateTime->format());
+        $dateTime->setDefaultFormat('d.m.Y H:i:s');
+        $this->assertEquals('13.04.2014 10:10:10', $dateTime->format());
+    }
+
+    public function testCastClassToString()
+    {
+        $dateTime = new DateTime('2014-04-13');
+        $this->assertEquals('2014-04-13 00:00:00', (string) $dateTime);
+    }
+
     public function testQuarter()
     {
         $dateTime = new DateTime('2012-02-12');
@@ -52,7 +66,7 @@ class DateTimeTest extends TestCase
         $this->assertEquals(4, $dateTime->getLastDayOfWeek());
     }
 
-    public function testSleepWakeup()
+    public function testSleepWakeUp()
     {
         $date = new DateTime('2012-10-12');
         $string = serialize($date);
@@ -74,9 +88,9 @@ class DateTimeTest extends TestCase
 
     public function testTimezone()
     {
-        //$date = new DateTime();
-        //$date->setTimezone('Europe/Berlin');
-        //$this->assertEquals($date->getTimezone(), 'Europe/Berline');
+        $date = new DateTime();
+        $date->setTimezone('Europe/Berlin');
+        $this->assertEquals('Europe/Berlin', $date->getTimezone());
     }
 
 }
