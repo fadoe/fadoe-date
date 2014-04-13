@@ -93,4 +93,20 @@ class DateTimeTest extends TestCase
         $this->assertEquals('Europe/Berlin', $date->getTimezone());
     }
 
+    public function testLeapYears()
+    {
+        $dateLeapYear = new DateTime('2000-01-01');
+        $this->assertTrue($dateLeapYear->isLeapYear());
+        $dateNoLeapYear = new DateTime('2013-01-01');
+        $this->assertFalse($dateNoLeapYear->isLeapYear());
+    }
+
+    public function testIsDayLightSavingTime()
+    {
+        $date = new DateTime('2014-02-01');
+        $this->assertFalse($date->isDaylightSavings());
+        $dateDLS = new DateTime('2014-03-31');
+        $this->assertTrue($dateDLS->isDaylightSavings());
+    }
+
 }

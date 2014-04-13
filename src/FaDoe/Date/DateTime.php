@@ -177,6 +177,16 @@ class DateTime extends \DateTime
         return $this->diff($from)->format('%r%y');
     }
 
+    public function isLeapYear()
+    {
+        return $this->format('L') == 1;
+    }
+
+    public function isDaylightSavings()
+    {
+        return $this->format('I') == 1;
+    }
+
     /**
      * Get a clone from this date time object
      *
