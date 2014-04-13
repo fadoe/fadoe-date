@@ -1,5 +1,5 @@
 {
-    "name": "fadoe/fadoe-date",
+    "name": "fadoe/date",
     "description": "Library that extends the PHP date class",
     "minimum-stability": "stable",
     "type": "library",
