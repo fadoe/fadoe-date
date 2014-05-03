@@ -4,6 +4,17 @@ namespace FaDoe\Date;
 class DateTime extends \DateTime
 {
 
+    /**
+     * Constants of days
+     */
+    const MONDAY = 1;
+    const TUESDAY = 2;
+    const WEDNESDAY = 3;
+    const THURSDAY = 4;
+    const FRIDAY = 5;
+    const SATURDAY = 6;
+    const SUNDAY = 7;
+
     private $str;
 
     /**
@@ -185,6 +196,53 @@ class DateTime extends \DateTime
     public function isDaylightSavings()
     {
         return $this->format('I') == 1;
+    }
+
+    public function isWeekday()
+    {
+        $dow = $this->format('N');
+
+        return $dow != self::SATURDAY && $dow != self::SUNDAY;
+    }
+
+    public function isWeekend()
+    {
+        return !$this->isWeekday();
+    }
+
+    public function isToday()
+    {
+        $today = new self();
+
+        return $this->format('Y-m-d') === $today->format('Y-m-d');
+    }
+
+    public function isTomorrow()
+    {
+        $tomorrow = new self('tomorrow');
+
+        return $this->format('Y-m-d') === $tomorrow->format('Y-m-d');
+    }
+
+    public function isYesterday()
+    {
+        $yesterday = new self('yesterday');
+
+        return $this->format('Y-m-d') === $yesterday->format('Y-m-d');
+    }
+
+    public function isPast()
+    {
+        $today = new self();
+
+        return $this < $today;
+    }
+
+    public function isFuture()
+    {
+        $today = new self();
+
+        return $this > $today;
     }
 
     /**

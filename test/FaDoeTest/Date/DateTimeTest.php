@@ -109,4 +109,60 @@ class DateTimeTest extends TestCase
         $this->assertTrue($dateDLS->isDaylightSavings());
     }
 
+    public function testDateIsWeekday()
+    {
+        $dateWeekday = new DateTime('2014-05-02');
+        $dateWeekend = new DateTime('2014-05-03');
+        $this->assertTrue($dateWeekday->isWeekday());
+        $this->assertFalse($dateWeekend->isWeekday());
+    }
+
+    public function testDateIsWeekEnd()
+    {
+        $dateWeekday = new DateTime('2014-05-02');
+        $dateWeekend = new DateTime('2014-05-03');
+        $this->assertTrue($dateWeekend->isWeekend());
+        $this->assertFalse($dateWeekday->isWeekend());
+    }
+
+    public function testDateIsYesterday()
+    {
+        $today = new DateTime();
+        $this->assertFalse($today->isYesterday());
+        $today->sub(new \DateInterval('P1D'));
+        $this->assertTrue($today->isYesterday());
+    }
+
+    public function testDateIsTomorrow()
+    {
+        $today = new DateTime();
+        $this->assertFalse($today->isTomorrow());
+        $today->add(new \DateInterval('P1D'));
+        $this->assertTrue($today->isTomorrow());
+    }
+
+    public function testDateIsToday()
+    {
+        $today = new DateTime();
+        $this->assertTrue($today->isToday());
+        $today->add(new \DateInterval('P1D'));
+        $this->assertFalse($today->isToday());
+    }
+
+    public function testDateIsFuture()
+    {
+        $today = new DateTime();
+        $this->assertFalse($today->isFuture());
+        $today->add(new \DateInterval('P1D'));
+        $this->assertTrue($today->isFuture());
+    }
+
+    public function testDateIsPast()
+    {
+        $today = new DateTime();
+        $this->assertFalse($today->isPast());
+        sleep(1);
+        $this->assertTrue($today->isPast());
+    }
+
 }
