@@ -1,8 +1,30 @@
 <?php
 namespace FaDoe\Date;
 
+use FaDoe\Date\Exception\InvalidArgumentException;
+
 class Compare
 {
+    /**
+     * greater then from date and lower then to date
+     */
+    const GT_FROM_LT_TO = 1;
+
+    /**
+     * greater then from date and lower or equals to date
+     */
+    const GT_FROM_LTEQ_TO = 2;
+
+    /**
+     * greater or equals from date and lower to date
+     */
+    const GTEQ_FROM_LT_TO = 3;
+
+    /**
+     * greater or equals from date and lower or equals to date
+     */
+    const GTEQ_FROM_LTEQ_TO = 4;
+
     /**
      * @var \DateTime
      */
@@ -95,23 +117,34 @@ class Compare
      *
      * @param \DateTime $from
      * @param \DateTime $to
-     * @param bool      $equal
+     * @param int       $equal
      *
      * @return bool
      */
-    public function between(\DateTime $from, \DateTime $to, $equal = true)
+    public function between(\DateTime $from, \DateTime $to, $equal = self::GTEQ_FROM_LTEQ_TO)
     {
-        if ($from > $to) {
-            $tmp = $from;
-            $from = $to;
-            $to = $tmp;
+        switch ($equal) {
+            case self::GTEQ_FROM_LTEQ_TO:
+                if ($from > $to) {
+                    $tmp = $from;
+                    $from = $to;
+                    $to = $tmp;
+                }
+                return $this->greaterThenOrEqual($from) && $this->lowerThenOrEqual($to);
+            case self::GT_FROM_LT_TO:
+                if ($from > $to) {
+                    $tmp = $from;
+                    $from = $to;
+                    $to = $tmp;
+                }
+                return $this->greaterThen($from) && $this->lowerThen($to);
+            case self::GT_FROM_LTEQ_TO:
+                return $this->greaterThen($from) && $this->lowerThenOrEqual($to);
+            case self::GTEQ_FROM_LT_TO:
+                return $this->greaterThenOrEqual($from) && $this->lowerThen($to);
         }
 
-        if ($equal) {
-            return $this->greaterThenOrEqual($from) && $this->lowerThenOrEqual($to);
-        }
-
-        return $this->greaterThen($from) && $this->lowerThen($to);
+        throw new InvalidArgumentException('Invalid compare argument given');
     }
 
     /**
@@ -137,5 +170,4 @@ class Compare
     {
         return $this->lowerThen($dateTime) ? $dateTime : $this->compareDate;
     }
-
 }

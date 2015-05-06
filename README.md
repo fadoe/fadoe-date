@@ -18,6 +18,15 @@ composer.phar require fadoe/date
 Compare is a class to compare ```\DateTime``` classes. You must create a instance with the ```\DateTime``` to compare
 against other ```\DateTime``` classes.
 
+There are several compare methods:
+
+| constant | compare strategy |
+| -------- | ------------ |
+| Compare::GT_FROM_LT_TO | date from < compare date < date to |
+| Compare::GT_FROM_LTEQ_TO | date from < compare date <= date to |
+| Compare::GTEQ_FROM_LT_TO | date from <= compare date < date to |
+| Compare::GTEQ_FROM_LTEQ_TO | date from <= compare date <= date to |
+
 ### DateRange
 
 This class creates ```\DateTime``` classes between two dates.
