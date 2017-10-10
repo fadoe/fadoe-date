@@ -146,7 +146,7 @@ class CompareTest extends TestCase
      */
     public function testCompareBetweenThrowsInvalidArgumentExceptionForInvalidCompareArgument()
     {
-        $this->compare->between($this->betweenDateLower, $this->betweenDateGreater, 'somethingWrong');
+        $this->compare->between($this->betweenDateLower, $this->betweenDateGreater, 100);
     }
 
     public function testGetMinimumDate()

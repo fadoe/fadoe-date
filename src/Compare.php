@@ -1,4 +1,5 @@
 <?php
+
 namespace FaDoe\Date;
 
 use FaDoe\Date\Exception\InvalidArgumentException;
@@ -26,14 +27,14 @@ class Compare
     const GTEQ_FROM_LTEQ_TO = 4;
 
     /**
-     * @var \DateTime
+     * @var \DateTimeInterface
      */
     private $compareDate;
 
     /**
-     * @param \DateTime $compareDate
+     * @param \DateTimeInterface $compareDate
      */
-    public function __construct(\DateTime $compareDate)
+    public function __construct(\DateTimeInterface $compareDate)
     {
         $this->compareDate = $compareDate;
     }
@@ -41,11 +42,11 @@ class Compare
     /**
      * Assert that DateTime object the same to compare date.
      *
-     * @param \DateTime $dateTime
+     * @param \DateTimeInterface $dateTime
      *
      * @return bool
      */
-    public function sameAs(\DateTime $dateTime)
+    public function sameAs(\DateTimeInterface $dateTime): bool
     {
         return $this->compareDate === $dateTime;
     }
@@ -53,11 +54,11 @@ class Compare
     /**
      * Assert that DateTime object equal to compare date.
      *
-     * @param \DateTime $date
+     * @param \DateTimeInterface $date
      *
      * @return bool
      */
-    public function equalTo(\DateTime $date)
+    public function equalTo(\DateTimeInterface $date): bool
     {
         return $this->compareDate == $date;
     }
@@ -65,11 +66,11 @@ class Compare
     /**
      * Assert that DateTime object lower then compare date.
      *
-     * @param \DateTime $date
+     * @param \DateTimeInterface $date
      *
      * @return bool
      */
-    public function greaterThen(\DateTime $date)
+    public function greaterThen(\DateTimeInterface $date): bool
     {
         return $this->compareDate > $date;
     }
@@ -77,11 +78,11 @@ class Compare
     /**
      * Assert that DateTime object lower or equal then compare date.
      *
-     * @param \DateTime $dateTime
+     * @param \DateTimeInterface $dateTime
      *
      * @return bool
      */
-    public function greaterThenOrEqual(\DateTime $dateTime)
+    public function greaterThenOrEqual(\DateTimeInterface $dateTime): bool
     {
         return $this->compareDate >= $dateTime;
     }
@@ -89,11 +90,11 @@ class Compare
     /**
      * Assert that DateTime object greater then compare date.
      *
-     * @param \DateTime $dateTime
+     * @param \DateTimeInterface $dateTime
      *
      * @return bool
      */
-    public function lowerThen(\DateTime $dateTime)
+    public function lowerThen(\DateTimeInterface $dateTime): bool
     {
         return $this->compareDate < $dateTime;
     }
@@ -101,11 +102,11 @@ class Compare
     /**
      * Assert that DateTime object greater or equal to compare date.
      *
-     * @param \DateTime $dateTime
+     * @param \DateTimeInterface $dateTime
      *
      * @return bool
      */
-    public function lowerThenOrEqual(\DateTime $dateTime)
+    public function lowerThenOrEqual(\DateTimeInterface $dateTime): bool
     {
         return $this->compareDate <= $dateTime;
     }
@@ -115,13 +116,14 @@ class Compare
      *
      * If equal to false the compare date is not equal to start or end date.
      *
-     * @param \DateTime $from
-     * @param \DateTime $to
-     * @param int       $equal
+     * @param \DateTimeInterface $from
+     * @param \DateTimeInterface $to
+     * @param int                $equal
      *
      * @return bool
+     * @throws InvalidArgumentException
      */
-    public function between(\DateTime $from, \DateTime $to, $equal = self::GTEQ_FROM_LTEQ_TO)
+    public function between(\DateTimeInterface $from, \DateTimeInterface $to, int $equal = self::GTEQ_FROM_LTEQ_TO)
     {
         switch ($equal) {
             case self::GTEQ_FROM_LTEQ_TO:
@@ -150,11 +152,11 @@ class Compare
     /**
      * Get min date.
      *
-     * @param \DateTime $dateTime
+     * @param \DateTimeInterface $dateTime
      *
-     * @return \DateTime
+     * @return \DateTimeInterface
      */
-    public function getMin(\DateTime $dateTime)
+    public function getMin(\DateTimeInterface $dateTime): \DateTimeInterface
     {
         return $this->lowerThen($dateTime) ? $this->compareDate : $dateTime;
     }
@@ -162,11 +164,11 @@ class Compare
     /**
      * Get max date.
      *
-     * @param \DateTime $dateTime
+     * @param \DateTimeInterface $dateTime
      *
-     * @return \DateTime
+     * @return \DateTimeInterface
      */
-    public function getMax(\DateTime $dateTime)
+    public function getMax(\DateTimeInterface $dateTime): \DateTimeInterface
     {
         return $this->lowerThen($dateTime) ? $dateTime : $this->compareDate;
     }
