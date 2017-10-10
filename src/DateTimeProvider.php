@@ -1,4 +1,5 @@
 <?php
+
 namespace FaDoe\Date;
 
 class DateTimeProvider 
@@ -9,17 +10,17 @@ class DateTimeProvider
     private $dateTimeClassName = '\DateTime';
 
     /**
-     * @var \DateTime
+     * @var \DateTimeInterface
      */
     private $today;
 
     /**
-     * @var \DateTime
+     * @var \DateTimeInterface
      */
     private $yesterday;
 
     /**
-     * @var \DateTime
+     * @var \DateTimeInterface
      */
     private $tomorrow;
 
@@ -32,17 +33,17 @@ class DateTimeProvider
     }
 
     /**
-     * @return \DateTime
+     * @return \DateTimeInterface
      */
-    public function getNow()
+    public function getNow(): \DateTimeInterface
     {
         return $this->getDateTimeInstance();
     }
 
     /**
-     * @return \DateTime
+     * @return \DateTimeInterface
      */
-    public function getToday()
+    public function getToday(): \DateTimeInterface
     {
         if (null === $this->today) {
             $this->today = $this->getDateTimeInstance('today');
@@ -52,9 +53,9 @@ class DateTimeProvider
     }
 
     /**
-     * @return \DateTime
+     * @return \DateTimeInterface
      */
-    public function getTomorrow()
+    public function getTomorrow(): \DateTimeInterface
     {
         if (null === $this->tomorrow) {
             $this->tomorrow = $this->getDateTimeInstance('tomorrow');
@@ -64,9 +65,9 @@ class DateTimeProvider
     }
 
     /**
-     * @return \DateTime
+     * @return \DateTimeInterface
      */
-    public function getYesterday()
+    public function getYesterday(): \DateTimeInterface
     {
         if (null === $this->yesterday) {
             $this->yesterday = $this->getDateTimeInstance('yesterday');
@@ -75,7 +76,12 @@ class DateTimeProvider
         return $this->yesterday;
     }
 
-    private function getDateTimeInstance($parameter = null)
+    /**
+     * @param null $parameter
+     *
+     * @return \DateTimeInterface
+     */
+    private function getDateTimeInstance($parameter = null): \DateTimeInterface
     {
         return new $this->dateTimeClassName($parameter);
     }
