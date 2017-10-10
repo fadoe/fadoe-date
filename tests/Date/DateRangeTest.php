@@ -1,11 +1,12 @@
 <?php
+
 namespace FaDoeTest\Date;
 
 use FaDoe\Date\DateRange;
+use PHPUnit\Framework\TestCase;
 
-class DateRangeTest extends \PHPUnit_Framework_TestCase
+class DateRangeTest extends TestCase
 {
-
     public function testRangeClassWithNoParameters()
     {
         $dateRange = new DateRange();
@@ -36,12 +37,12 @@ class DateRangeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($date1, $dates[0]);
 
         foreach ($dates as $date) {
-            $this->assertInstanceOf('\DateTime', $date);
+            $this->assertInstanceOf(\DateTimeInterface::class, $date);
         }
 
         $this->assertEquals($date2, end($dates));
 
-        $this->assertInstanceOf('\DateInterval', $dateRange->getDateInterval());
+        $this->assertInstanceOf(\DateInterval::class, $dateRange->getDateInterval());
     }
 
     public function testDateTimeObjectsInInvertedOrder()
@@ -67,7 +68,6 @@ class DateRangeTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertEquals($date1, end($dates));
-
     }
 
     public function testFromAndToAreEqualDateTimeObjects()
@@ -184,5 +184,4 @@ class DateRangeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('2014-04-14', $dateTime->offsetGet(2)->format('Y-m-d'));
         $this->assertTrue($dateTime->offsetExists(2));
     }
-
 }

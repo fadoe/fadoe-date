@@ -1,8 +1,9 @@
 <?php
+
 namespace FaDoeTest\Date;
 
-use PHPUnit_Framework_TestCase as TestCase;
 use FaDoe\Date\DateTimeZone;
+use PHPUnit\Framework\TestCase;
 
 class DateTimeZoneTest extends TestCase
 {

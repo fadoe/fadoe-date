@@ -1,9 +1,11 @@
 <?php
+
 namespace FaDoeTest\Date;
 
 use FaDoe\Date\DateTimeProvider;
+use PHPUnit\Framework\TestCase;
 
-class DateTimeProviderTest extends \PHPUnit_Framework_TestCase
+class DateTimeProviderTest extends TestCase
 {
     /**
      * @var DateTimeProvider
@@ -19,8 +21,7 @@ class DateTimeProviderTest extends \PHPUnit_Framework_TestCase
     {
         $this->dateTimeProvider = new DateTimeProvider();
         $this->dateTimeProviderFaDoeDate = new DateTimeProvider();
-        $this->dateTimeProviderFaDoeDate
-            ->setDateTimeClassName('FaDoe\Date\DateTime');
+        $this->dateTimeProviderFaDoeDate->setDateTimeClassName('FaDoe\Date\DateTime');
     }
 
     public function testGetNowDateTime()

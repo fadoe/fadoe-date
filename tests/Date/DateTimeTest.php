@@ -2,8 +2,8 @@
 
 namespace FaDoeTest\Date\DateTime;
 
-use PHPUnit_Framework_TestCase as TestCase;
 use FaDoe\Date\DateTime;
+use PHPUnit\Framework\TestCase;
 
 class DateTimeTest extends TestCase
 {
@@ -164,5 +164,4 @@ class DateTimeTest extends TestCase
         sleep(1);
         $this->assertTrue($today->isPast());
     }
-
 }

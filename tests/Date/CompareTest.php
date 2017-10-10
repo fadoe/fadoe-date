@@ -1,9 +1,11 @@
 <?php
+
 namespace FaDoeTest\Date\DateTime;
 
 use FaDoe\Date\Compare;
+use PHPUnit\Framework\TestCase;
 
-class CompareTest extends \PHPUnit_Framework_TestCase
+class CompareTest extends TestCase
 {
     /**
      * @var Compare
@@ -11,27 +13,27 @@ class CompareTest extends \PHPUnit_Framework_TestCase
     private $compare;
 
     /**
-     * @var \DateTime
+     * @var \DateTimeInterface
      */
     private $compareDate;
 
     /**
-     * @var \DateTime
+     * @var \DateTimeInterface
      */
     private $betweenDateLower;
 
     /**
-     * @var \DateTime
+     * @var \DateTimeInterface
      */
     private $betweenDateGreater;
 
     /**
-     * @var \DateTime
+     * @var \DateTimeInterface
      */
     private $dateLower;
 
     /**
-     * @var \DateTime
+     * @var \DateTimeInterface
      */
     private $dateGreater;
 
