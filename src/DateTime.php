@@ -1,9 +1,9 @@
 <?php
+
 namespace FaDoe\Date;
 
 class DateTime extends \DateTime
 {
-
     /**
      * Constants of days
      */
@@ -15,24 +15,28 @@ class DateTime extends \DateTime
     const SATURDAY = 6;
     const SUNDAY = 7;
 
+    /**
+     * @var string
+     */
     private $str;
 
     /**
      * default datetime format
      *
-     * @var int
+     * @var string
      */
     private $defaultFormat = 'Y-m-d H:i:s';
 
     /**
      * set date
      *
-     * @param  int $year
-     * @param  int $month
-     * @param  int $day
-     * @return DateTime
+     * @param int $year
+     * @param int $month
+     * @param int $day
+     *
+     * @return self
      */
-    public function setDate($year, $month, $day)
+    public function setDate($year, $month, $day): self
     {
         parent::setDate($year, $month, $day);
 
@@ -43,9 +47,10 @@ class DateTime extends \DateTime
      * set default datetime format
      *
      * @param string $defaultFormat
-     * @return DateTime
+     *
+     * @return self
      */
-    public function setDefaultFormat($defaultFormat)
+    public function setDefaultFormat(string $defaultFormat): self
     {
         $this->defaultFormat = $defaultFormat;
 
@@ -57,7 +62,7 @@ class DateTime extends \DateTime
      *
      * @return string
      */
-    public function getDefaultFormat()
+    public function getDefaultFormat(): string
     {
         return $this->defaultFormat;
     }
@@ -66,9 +71,10 @@ class DateTime extends \DateTime
      * get formated datetime
      *
      * @param string|null $format
+     *
      * @return string
      */
-    public function format($format = null)
+    public function format($format = null): string
     {
         if (null !== $format) {
             return parent::format($format);
@@ -81,9 +87,10 @@ class DateTime extends \DateTime
      * set timezone
      *
      * @param \DateTimeZone|string $timezone
-     * @return $this|\DateTime
+     *
+     * @return self
      */
-    public function setTimezone($timezone)
+    public function setTimezone($timezone): self
     {
         if (!$timezone instanceof \DateTimeZone) {
             $timezone = new \DateTimeZone($timezone);
@@ -98,7 +105,7 @@ class DateTime extends \DateTime
      *
      * @return DateTimeZone
      */
-    public function getTimezone()
+    public function getTimezone(): DateTimeZone
     {
         return new DateTimeZone(parent::getTimezone()->getName());
     }
@@ -108,7 +115,7 @@ class DateTime extends \DateTime
      *
      * @return int
      */
-    public function getFirstDayOfWeek()
+    public function getFirstDayOfWeek(): int
     {
         $dayOfWeek = $this->format('N');
         $date = $this->copy();
@@ -120,9 +127,10 @@ class DateTime extends \DateTime
 
     /**
      * get the last day of the week
+     *
      * @return int
      */
-    public function getLastDayOfWeek()
+    public function getLastDayOfWeek(): int
     {
         $dayOfWeek = $this->format('N');
         $date = $this->copy();
@@ -134,18 +142,20 @@ class DateTime extends \DateTime
 
     /**
      * get the quarter
+     *
      * @return int
      */
-    public function getQuarter()
+    public function getQuarter(): int
     {
         return ceil($this->format('m') / 3);
     }
 
     /**
      * get the total weeks of the month
+     *
      * @return int
      */
-    public function getWeeksInMonth()
+    public function getWeeksInMonth(): int
     {
         $tmpDate = $this->copy();
         $tmpDate->setDate($tmpDate->format('Y'), $tmpDate->format('m'), 1);
@@ -167,7 +177,7 @@ class DateTime extends \DateTime
      *
      * @return int
      */
-    public function getWeekdayInMonth()
+    public function getWeekdayInMonth(): int
     {
         return (ceil($this->format('d') / 7));
     }
@@ -175,11 +185,11 @@ class DateTime extends \DateTime
     /**
      * Return differences in years.
      *
-     * @param null|DateTime $from
+     * @param null|\DateTimeInterface $from
      *
      * @return string
      */
-    public function age($from = null)
+    public function age($from = null): string
     {
         if (null === $from) {
             $from = new $this;
@@ -188,57 +198,84 @@ class DateTime extends \DateTime
         return $this->diff($from)->format('%r%y');
     }
 
-    public function isLeapYear()
+    /**
+     * @return bool
+     */
+    public function isLeapYear(): bool
     {
         return $this->format('L') == 1;
     }
 
-    public function isDaylightSavings()
+    /**
+     * @return bool
+     */
+    public function isDaylightSavings(): bool
     {
         return $this->format('I') == 1;
     }
 
-    public function isWeekday()
+    /**
+     * @return bool
+     */
+    public function isWeekday(): bool
     {
         $dow = $this->format('N');
 
         return $dow != self::SATURDAY && $dow != self::SUNDAY;
     }
 
-    public function isWeekend()
+    /**
+     * @return bool
+     */
+    public function isWeekend(): bool
     {
         return !$this->isWeekday();
     }
 
-    public function isToday()
+    /**
+     * @return bool
+     */
+    public function isToday(): bool
     {
         $today = new self();
 
         return $this->format('Y-m-d') === $today->format('Y-m-d');
     }
 
-    public function isTomorrow()
+    /**
+     * @return bool
+     */
+    public function isTomorrow(): bool
     {
         $tomorrow = new self('tomorrow');
 
         return $this->format('Y-m-d') === $tomorrow->format('Y-m-d');
     }
 
-    public function isYesterday()
+    /**
+     * @return bool
+     */
+    public function isYesterday(): bool
     {
         $yesterday = new self('yesterday');
 
         return $this->format('Y-m-d') === $yesterday->format('Y-m-d');
     }
 
-    public function isPast()
+    /**
+     * @return bool
+     */
+    public function isPast(): bool
     {
         $today = new self();
 
         return $this < $today;
     }
 
-    public function isFuture()
+    /**
+     * @return bool
+     */
+    public function isFuture(): bool
     {
         $today = new self();
 
@@ -248,9 +285,9 @@ class DateTime extends \DateTime
     /**
      * Get a clone from this date time object
      *
-     * @return DateTime
+     * @return self
      */
-    public function copy()
+    public function copy(): self
     {
         return clone $this;
     }
@@ -260,20 +297,23 @@ class DateTime extends \DateTime
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->format();
     }
 
-    public function __sleep()
+    /**
+     * @return array
+     */
+    public function __sleep(): array
     {
         $this->str = $this->format('c');
-        return array('str');
+
+        return ['str'];
     }
 
     public function __wakeup()
     {
         $this->__construct($this->str);
     }
-
 }
