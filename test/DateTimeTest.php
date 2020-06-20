@@ -1,14 +1,20 @@
 <?php
 
-namespace FaDoeTest\Date\DateTime;
+namespace FaDoeTest\Date;
 
+use DateInterval;
 use FaDoe\Date\DateTime;
+use FaDoe\Date\DateTimeZone;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class DateTimeTest
+ *
+ * @package FaDoeTest\Date
+ */
 class DateTimeTest extends TestCase
 {
-
-    public function testChangingDefaultDateFormat()
+    public function testChangingDefaultDateFormat(): void
     {
         $dateTime = new DateTime('13.04.2014 10:10:10');
         $this->assertEquals('2014-04-13 10:10:10', $dateTime->format());
@@ -16,13 +22,13 @@ class DateTimeTest extends TestCase
         $this->assertEquals('13.04.2014 10:10:10', $dateTime->format());
     }
 
-    public function testCastClassToString()
+    public function testCastClassToString(): void
     {
         $dateTime = new DateTime('2014-04-13');
         $this->assertEquals('2014-04-13 00:00:00', (string) $dateTime);
     }
 
-    public function testQuarter()
+    public function testQuarter(): void
     {
         $dateTime = new DateTime('2012-02-12');
         $this->assertEquals(1, $dateTime->getQuarter());
@@ -34,7 +40,7 @@ class DateTimeTest extends TestCase
         $this->assertEquals(4, $dateTime->getQuarter());
     }
 
-    public function testWeeksInMonth()
+    public function testWeeksInMonth(): void
     {
         $dateTime = new DateTime('2012-10-29');
         $this->assertEquals(5, $dateTime->getWeeksInMonth());
@@ -42,7 +48,7 @@ class DateTimeTest extends TestCase
         $this->assertEquals(6, $dateTime->getWeeksInMonth());
     }
 
-    public function testWeekdayInMonth()
+    public function testWeekdayInMonth(): void
     {
         $dateTime = new DateTime('2012-10-29');
         $this->assertEquals(5, $dateTime->getWeekdayInMonth());
@@ -50,7 +56,7 @@ class DateTimeTest extends TestCase
         $this->assertEquals(2, $dateTime->getWeekdayInMonth());
     }
 
-    public function testFirstDayOfWeek()
+    public function testFirstDayOfWeek(): void
     {
         $dateTime = new DateTime('2012-10-24');
         $this->assertEquals(22, $dateTime->getFirstDayOfWeek());
@@ -58,7 +64,7 @@ class DateTimeTest extends TestCase
         $this->assertEquals(29, $dateTime->getFirstDayOfWeek());
     }
 
-    public function testLastDayOfWeek()
+    public function testLastDayOfWeek(): void
     {
         $dateTime = new DateTime('2012-10-24');
         $this->assertEquals(28, $dateTime->getLastDayOfWeek());
@@ -66,7 +72,7 @@ class DateTimeTest extends TestCase
         $this->assertEquals(4, $dateTime->getLastDayOfWeek());
     }
 
-    public function testSleepWakeUp()
+    public function testSleepWakeUp(): void
     {
         $date = new DateTime('2012-10-12');
         $string = serialize($date);
@@ -75,7 +81,7 @@ class DateTimeTest extends TestCase
 
     }
 
-    public function testAge()
+    public function testAge(): void
     {
         $date = new DateTime();
         $date1 = new DateTime('2010-10-10');
@@ -86,14 +92,14 @@ class DateTimeTest extends TestCase
         $this->assertEquals(-3, $date2->age($date1));
     }
 
-    public function testTimezone()
+    public function testTimezone(): void
     {
         $date = new DateTime();
         $date->setTimezone('Europe/Berlin');
         $this->assertEquals('Europe/Berlin', $date->getTimezone());
     }
 
-    public function testLeapYears()
+    public function testLeapYears(): void
     {
         $dateLeapYear = new DateTime('2000-01-01');
         $this->assertTrue($dateLeapYear->isLeapYear());
@@ -101,15 +107,15 @@ class DateTimeTest extends TestCase
         $this->assertFalse($dateNoLeapYear->isLeapYear());
     }
 
-    public function testIsDayLightSavingTime()
+    public function testIsDayLightSavingTime(): void
     {
-        $date = new DateTime('2014-02-01');
+        $date = new DateTime('2014-02-01', new DateTimeZone('Europe/Berlin'));
         $this->assertFalse($date->isDaylightSavings());
-        $dateDLS = new DateTime('2014-03-31');
+        $dateDLS = new DateTime('2014-03-31', new DateTimeZone('Europe/Berlin'));
         $this->assertTrue($dateDLS->isDaylightSavings());
     }
 
-    public function testDateIsWeekday()
+    public function testDateIsWeekday(): void
     {
         $dateWeekday = new DateTime('2014-05-02');
         $dateWeekend = new DateTime('2014-05-03');
@@ -117,7 +123,7 @@ class DateTimeTest extends TestCase
         $this->assertFalse($dateWeekend->isWeekday());
     }
 
-    public function testDateIsWeekEnd()
+    public function testDateIsWeekEnd(): void
     {
         $dateWeekday = new DateTime('2014-05-02');
         $dateWeekend = new DateTime('2014-05-03');
@@ -125,40 +131,41 @@ class DateTimeTest extends TestCase
         $this->assertFalse($dateWeekday->isWeekend());
     }
 
-    public function testDateIsYesterday()
+    public function testDateIsYesterday(): void
     {
         $today = new DateTime();
         $this->assertFalse($today->isYesterday());
-        $today->sub(new \DateInterval('P1D'));
+        $today->sub(new DateInterval('P1D'));
         $this->assertTrue($today->isYesterday());
     }
 
-    public function testDateIsTomorrow()
+    public function testDateIsTomorrow(): void
     {
         $today = new DateTime();
         $this->assertFalse($today->isTomorrow());
-        $today->add(new \DateInterval('P1D'));
+        $today->add(new DateInterval('P1D'));
         $this->assertTrue($today->isTomorrow());
     }
 
-    public function testDateIsToday()
+    public function testDateIsToday(): void
     {
         $today = new DateTime();
         $this->assertTrue($today->isToday());
-        $today->add(new \DateInterval('P1D'));
+        $today->add(new DateInterval('P1D'));
         $this->assertFalse($today->isToday());
     }
 
-    public function testDateIsFuture()
+    public function testDateIsFuture(): void
     {
         $today = new DateTime();
         $this->assertFalse($today->isFuture());
-        $today->add(new \DateInterval('P1D'));
+        $today->add(new DateInterval('P1D'));
         $this->assertTrue($today->isFuture());
     }
 
-    public function testDateIsPast()
+    public function testDateIsPast(): void
     {
+        $this->markTestSkipped('This method is deprecated');
         $today = new DateTime();
         $this->assertFalse($today->isPast());
         sleep(1);

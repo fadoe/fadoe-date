@@ -264,6 +264,7 @@ class DateTime extends \DateTime
 
     /**
      * @return bool
+     * @deprecated
      */
     public function isPast(): bool
     {

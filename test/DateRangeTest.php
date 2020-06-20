@@ -2,12 +2,19 @@
 
 namespace FaDoeTest\Date;
 
+use DateTime;
 use FaDoe\Date\DateRange;
+use FaDoe\Date\Exception\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class DateRangeTest
+ *
+ * @package FaDoeTest\Date
+ */
 class DateRangeTest extends TestCase
 {
-    public function testRangeClassWithNoParameters()
+    public function testRangeClassWithNoParameters(): void
     {
         $dateRange = new DateRange();
 
@@ -18,10 +25,10 @@ class DateRangeTest extends TestCase
         $this->assertCount(0, $dateRange->getDates());
     }
 
-    public function testDateTimeObjectsInRightOrder()
+    public function testDateTimeObjectsInRightOrder(): void
     {
-        $date1 = new \DateTime('2013-09-01');
-        $date2 = new \DateTime('2013-09-30');
+        $date1 = new DateTime('2013-09-01');
+        $date2 = new DateTime('2013-09-30');
 
         $dateRange = new DateRange($date1, $date2);
 
@@ -45,10 +52,10 @@ class DateRangeTest extends TestCase
         $this->assertInstanceOf(\DateInterval::class, $dateRange->getDateInterval());
     }
 
-    public function testDateTimeObjectsInInvertedOrder()
+    public function testDateTimeObjectsInInvertedOrder(): void
     {
-        $date1 = new \DateTime('2013-09-01');
-        $date2 = new \DateTime('2013-09-30');
+        $date1 = new DateTime('2013-09-01');
+        $date2 = new DateTime('2013-09-30');
 
         $dateRange = new DateRange($date2, $date1);
 
@@ -70,9 +77,9 @@ class DateRangeTest extends TestCase
         $this->assertEquals($date1, end($dates));
     }
 
-    public function testFromAndToAreEqualDateTimeObjects()
+    public function testFromAndToAreEqualDateTimeObjects(): void
     {
-        $date1 = new \DateTime('2013-09-01');
+        $date1 = new DateTime('2013-09-01');
 
         $dateRange = new DateRange($date1, $date1);
 
@@ -88,18 +95,18 @@ class DateRangeTest extends TestCase
         $this->assertEquals($date1, $dates[0]);
     }
 
-    public function testStringsInRightOrder()
+    public function testStringsInRightOrder(): void
     {
         $date1 = '2013-09-01';
         $date2 = '2013-09-30';
 
         $dateRange = new DateRange($date1, $date2);
 
-        $this->assertEquals(new \DateTime($date1), $dateRange->getFrom());
-        $this->assertEquals(new \DateTime($date2), $dateRange->getTo());
+        $this->assertEquals(new DateTime($date1), $dateRange->getFrom());
+        $this->assertEquals(new DateTime($date2), $dateRange->getTo());
     }
 
-    public function testSetterAndGetter()
+    public function testSetterAndGetter(): void
     {
         $date1 = '2013-09-01';
         $date2 = '2013-09-30';
@@ -109,28 +116,24 @@ class DateRangeTest extends TestCase
         $dateRange->setFrom($date1);
         $dateRange->setTo($date2);
 
-        $this->assertEquals(new \DateTime($date1), $dateRange->getFrom());
-        $this->assertEquals(new \DateTime($date2), $dateRange->getTo());
+        $this->assertEquals(new DateTime($date1), $dateRange->getFrom());
+        $this->assertEquals(new DateTime($date2), $dateRange->getTo());
     }
 
-    /**
-     * @expectedException \FaDoe\Date\Exception\InvalidArgumentException
-     */
-    public function testConstructorThrowsExceptionByInvalidParameters()
+    public function testConstructorThrowsExceptionByInvalidParameters(): void
     {
+        $this->expectException(InvalidArgumentException::class);
         $dateRange = new DateRange(array(), array());
     }
 
-    /**
-     * @expectedException \FaDoe\Date\Exception\InvalidArgumentException
-     */
-    public function testThrowExceptionIfSetNotADateObject()
+    public function testThrowExceptionIfSetNotADateObject(): void
     {
+        $this->expectException(InvalidArgumentException::class);
         $dateRange = new DateRange();
         $dateRange->setTo(null);
     }
 
-    public function testIterateOverDates()
+    public function testIterateOverDates(): void
     {
         $from = '2014-04-10';
         $to = '2014-04-12';
@@ -149,32 +152,28 @@ class DateRangeTest extends TestCase
         $this->assertEquals(0, $dateRange->key());
     }
 
-    /**
-     * @expectedException \FaDoe\Date\Exception\InvalidArgumentException
-     */
-    public function testOffsetSetThrowsException()
+    public function testOffsetSetThrowsException(): void
     {
+        $this->expectException(InvalidArgumentException::class);
         $dateRange = new DateRange();
         $dateRange->offsetSet(0, '2014-04-13');
     }
 
-    /**
-     * @expectedException \FaDoe\Date\Exception\InvalidArgumentException
-     */
-    public function testOffsetUnsetThrowsException()
+    public function testOffsetUnsetThrowsException(): void
     {
+        $this->expectException(InvalidArgumentException::class);
         $dateRange = new DateRange('2014-04-12', '2014-04-13');
         $dateRange->offsetUnset(0);
     }
 
-    public function testOffsetMethodsDefaultValues()
+    public function testOffsetMethodsDefaultValues(): void
     {
         $dateTime = new DateRange();
         $this->assertFalse($dateTime->offsetExists(0));
         $this->assertNull($dateTime->offsetGet(0));
     }
 
-    public function testOffsetMethodsInAction()
+    public function testOffsetMethodsInAction(): void
     {
         $dateTime = new DateRange('2014-04-12', '2014-04-14');
         $this->assertEquals('2014-04-12', $dateTime->offsetGet(0)->format('Y-m-d'));
