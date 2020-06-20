@@ -2,38 +2,30 @@
 
 namespace FaDoe\Date;
 
+use ArrayAccess;
+use DateInterval;
+use DateTimeInterface;
+use Exception as PhpException;
 use FaDoe\Date\Exception\InvalidArgumentException;
+use Iterator;
 
-class DateRange implements \Iterator, \ArrayAccess
+/**
+ * Class DateRange
+ *
+ * @package FaDoe\Date
+ */
+class DateRange implements Iterator, ArrayAccess
 {
-    /**
-     * @var \DateTimeInterface|null
-     */
-    private $from = null;
+    private ?DateTimeInterface $from = null;
+    private ?DateTimeInterface $to = null;
+    private array $dates = [];
+    private int $index = 0;
+    private bool $isInverted = false;
 
     /**
-     * @var \DateTimeInterface|null
-     */
-    private $to = null;
-
-    /**
-     * @var array
-     */
-    private $dates = [];
-
-    /**
-     * @var int
-     */
-    private $index = 0;
-
-    /**
-     * @var bool
-     */
-    private $isInverted = false;
-
-    /**
-     * @param string|\DateTimeInterface $from
-     * @param string|\DateTimeInterface $to
+     * @param string|DateTimeInterface|null $from
+     * @param string|DateTimeInterface|null $to
+     * @throws PhpException
      */
     public function __construct($from = null, $to = null)
     {
@@ -49,22 +41,22 @@ class DateRange implements \Iterator, \ArrayAccess
     /**
      * Gets the interval between the two dates
      *
-     * @return \DateInterval|null
+     * @return DateInterval|null
+     * @throws Exception\InvalidArgumentException
      */
-    public function getDateInterval()
+    public function getDateInterval(): ?DateInterval
     {
         if ((null === $this->from) && (null === $this->to)) {
             return null;
         }
+
         return $this->from->diff($this->to);
     }
 
     /**
-     * Gets From
-     *
-     * @return \DateTimeInterface|null
+     * @return DateTimeInterface|null
      */
-    public function getFrom()
+    public function getFrom(): ?DateTimeInterface
     {
         return $this->from;
     }
@@ -72,10 +64,11 @@ class DateRange implements \Iterator, \ArrayAccess
     /**
      * Sets From
      *
-     * @param \DateTimeInterface|string $from
+     * @param DateTimeInterface|string $from
      *
      * @return DateRange
      * @throws Exception\InvalidArgumentException
+     * @throws PhpException
      */
     public function setFrom($from): self
     {
@@ -83,7 +76,7 @@ class DateRange implements \Iterator, \ArrayAccess
             $from = new \DateTime($from);
         }
 
-        if (!$from instanceof \DateTimeInterface) {
+        if (!$from instanceof DateTimeInterface) {
             throw InvalidArgumentException::fromInvalidType(gettype($from));
         }
 
@@ -96,7 +89,7 @@ class DateRange implements \Iterator, \ArrayAccess
     /**
      * Gets To
      *
-     * @return \DateTimeInterface|null
+     * @return DateTimeInterface|null
      */
     public function getTo()
     {
@@ -106,10 +99,11 @@ class DateRange implements \Iterator, \ArrayAccess
     /**
      * Sets To
      *
-     * @param \DateTimeInterface $to
+     * @param DateTimeInterface $to
      *
      * @return DateRange
      * @throws Exception\InvalidArgumentException
+     * @throws PhpException
      */
     public function setTo($to): self
     {
@@ -117,7 +111,7 @@ class DateRange implements \Iterator, \ArrayAccess
             $to = new \DateTime($to);
         }
 
-        if (!$to instanceof \DateTimeInterface) {
+        if (!$to instanceof DateTimeInterface) {
             throw InvalidArgumentException::fromInvalidType(gettype($to));
         }
 
@@ -153,9 +147,9 @@ class DateRange implements \Iterator, \ArrayAccess
     }
 
     /**
-     * @return \DateTimeInterface
+     * @return DateTimeInterface
      */
-    public function current(): \DateTimeInterface
+    public function current(): DateTimeInterface
     {
         return $this->dates[$this->index];
     }
@@ -183,7 +177,7 @@ class DateRange implements \Iterator, \ArrayAccess
 
     /**
      * @param int            $offset
-     * @param \DateTimeInterface $value
+     * @param DateTimeInterface $value
      *
      * @throws Exception\InvalidArgumentException
      */
@@ -215,7 +209,7 @@ class DateRange implements \Iterator, \ArrayAccess
     /**
      * @param int $offset Offset
      *
-     * @return \DateTimeInterface|null
+     * @return DateTimeInterface|null
      */
     public function offsetGet($offset)
     {
@@ -236,7 +230,7 @@ class DateRange implements \Iterator, \ArrayAccess
         $d = clone $this->from;
         $this->dates[] = clone $d;
 
-        $dateInterval = new \DateInterval('P1D');
+        $dateInterval = new DateInterval('P1D');
 
         if ($this->from <= $this->to) {
             while ($d != $this->to) {

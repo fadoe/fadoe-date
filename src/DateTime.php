@@ -2,18 +2,27 @@
 
 namespace FaDoe\Date;
 
-class DateTime extends \DateTime
+use DateInterval;
+use DateTime as PhpDateTime;
+use Exception;
+
+/**
+ * Class DateTime
+ *
+ * @package FaDoe\Date
+ */
+class DateTime extends PhpDateTime
 {
     /**
      * Constants of days
      */
-    const MONDAY = 1;
-    const TUESDAY = 2;
-    const WEDNESDAY = 3;
-    const THURSDAY = 4;
-    const FRIDAY = 5;
-    const SATURDAY = 6;
-    const SUNDAY = 7;
+    public const MONDAY = 1;
+    public const TUESDAY = 2;
+    public const WEDNESDAY = 3;
+    public const THURSDAY = 4;
+    public const FRIDAY = 5;
+    public const SATURDAY = 6;
+    public const SUNDAY = 7;
 
     /**
      * @var string
@@ -114,12 +123,13 @@ class DateTime extends \DateTime
      * get the first day of this week
      *
      * @return int
+     * @throws Exception
      */
     public function getFirstDayOfWeek(): int
     {
         $dayOfWeek = $this->format('N');
         $date = $this->copy();
-        $dateInterval = new \DateInterval('P' . ($dayOfWeek - 1) . 'D');
+        $dateInterval = new DateInterval('P' . ($dayOfWeek - 1) . 'D');
         $date->sub($dateInterval);
 
         return (int) $date->format('d');
@@ -129,12 +139,13 @@ class DateTime extends \DateTime
      * get the last day of the week
      *
      * @return int
+     * @throws Exception
      */
     public function getLastDayOfWeek(): int
     {
         $dayOfWeek = $this->format('N');
         $date = $this->copy();
-        $dateInterval = new \DateInterval('P' . (7 - $dayOfWeek) . 'D');
+        $dateInterval = new DateInterval('P' . (7 - $dayOfWeek) . 'D');
         $date->add($dateInterval);
 
         return (int) $date->format('d');
@@ -147,7 +158,7 @@ class DateTime extends \DateTime
      */
     public function getQuarter(): int
     {
-        return ceil($this->format('m') / 3);
+        return (int) ceil($this->format('m') / 3);
     }
 
     /**
@@ -179,7 +190,7 @@ class DateTime extends \DateTime
      */
     public function getWeekdayInMonth(): int
     {
-        return (ceil($this->format('d') / 7));
+        return (int) ceil($this->format('d') / 7);
     }
 
     /**
@@ -192,7 +203,7 @@ class DateTime extends \DateTime
     public function age($from = null): string
     {
         if (null === $from) {
-            $from = new $this;
+            $from = new self();
         }
 
         return $this->diff($from)->format('%r%y');

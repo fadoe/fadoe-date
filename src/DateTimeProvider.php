@@ -2,48 +2,35 @@
 
 namespace FaDoe\Date;
 
-class DateTimeProvider 
+use DateTimeInterface;
+
+class DateTimeProvider
 {
-    /**
-     * @var string
-     */
-    private $dateTimeClassName = '\DateTime';
-
-    /**
-     * @var \DateTimeInterface
-     */
-    private $today;
-
-    /**
-     * @var \DateTimeInterface
-     */
-    private $yesterday;
-
-    /**
-     * @var \DateTimeInterface
-     */
-    private $tomorrow;
+    private string $dateTimeClassName = '\DateTime';
+    private ?DateTimeInterface $today = null;
+    private ?DateTimeInterface $yesterday = null;
+    private ?DateTimeInterface $tomorrow = null;
 
     /**
      * @param string $dateTimeClassName
      */
-    public function setDateTimeClassName($dateTimeClassName)
+    public function setDateTimeClassName(string $dateTimeClassName): void
     {
         $this->dateTimeClassName = (string) $dateTimeClassName;
     }
 
     /**
-     * @return \DateTimeInterface
+     * @return DateTimeInterface
      */
-    public function getNow(): \DateTimeInterface
+    public function getNow(): DateTimeInterface
     {
         return $this->getDateTimeInstance();
     }
 
     /**
-     * @return \DateTimeInterface
+     * @return DateTimeInterface
      */
-    public function getToday(): \DateTimeInterface
+    public function getToday(): DateTimeInterface
     {
         if (null === $this->today) {
             $this->today = $this->getDateTimeInstance('today');
@@ -53,9 +40,9 @@ class DateTimeProvider
     }
 
     /**
-     * @return \DateTimeInterface
+     * @return DateTimeInterface
      */
-    public function getTomorrow(): \DateTimeInterface
+    public function getTomorrow(): DateTimeInterface
     {
         if (null === $this->tomorrow) {
             $this->tomorrow = $this->getDateTimeInstance('tomorrow');
@@ -65,9 +52,9 @@ class DateTimeProvider
     }
 
     /**
-     * @return \DateTimeInterface
+     * @return DateTimeInterface
      */
-    public function getYesterday(): \DateTimeInterface
+    public function getYesterday(): DateTimeInterface
     {
         if (null === $this->yesterday) {
             $this->yesterday = $this->getDateTimeInstance('yesterday');
@@ -77,11 +64,11 @@ class DateTimeProvider
     }
 
     /**
-     * @param null $parameter
+     * @param string|null $parameter
      *
-     * @return \DateTimeInterface
+     * @return DateTimeInterface|object
      */
-    private function getDateTimeInstance($parameter = null): \DateTimeInterface
+    private function getDateTimeInstance(?string $parameter = null): DateTimeInterface
     {
         return new $this->dateTimeClassName($parameter);
     }

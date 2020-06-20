@@ -2,7 +2,15 @@
 
 namespace FaDoe\Date;
 
-class DateTimeZone extends \DateTimeZone
+use DateTimeZone as PhpDateTimeZone;
+
+/**
+ * Class DateTimeZone
+ *
+ * @package FaDoe\Date
+ * @psalm-immutable
+ */
+class DateTimeZone extends PhpDateTimeZone
 {
     /**
      * @return string
