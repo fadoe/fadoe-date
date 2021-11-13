@@ -1,8 +1,7 @@
 <?php
 
-namespace FaDoeTest\Date\DateTime;
+namespace FaDoe\Date;
 
-use FaDoe\Date\Compare;
 use PHPUnit\Framework\TestCase;
 
 class CompareTest extends TestCase
@@ -37,7 +36,7 @@ class CompareTest extends TestCase
      */
     private $dateGreater;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->compareDate = new \DateTime('2014-04-13 12:00:00');
         $this->betweenDateLower = new \DateTime('2014-04-13 10:00:00');
@@ -141,11 +140,9 @@ class CompareTest extends TestCase
         $this->assertFalse($compare->between($this->betweenDateLower, $this->betweenDateGreater));
     }
 
-    /**
-     * @expectedException \FaDoe\Date\Exception\InvalidArgumentException
-     */
     public function testCompareBetweenThrowsInvalidArgumentExceptionForInvalidCompareArgument()
     {
+        $this->expectException(Exception\InvalidArgumentException::class);
         $this->compare->between($this->betweenDateLower, $this->betweenDateGreater, 100);
     }
 

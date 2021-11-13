@@ -1,8 +1,7 @@
 <?php
 
-namespace FaDoeTest\Date;
+namespace FaDoe\Date;
 
-use FaDoe\Date\DateRange;
 use PHPUnit\Framework\TestCase;
 
 class DateRangeTest extends TestCase
@@ -113,19 +112,15 @@ class DateRangeTest extends TestCase
         $this->assertEquals(new \DateTime($date2), $dateRange->getTo());
     }
 
-    /**
-     * @expectedException \FaDoe\Date\Exception\InvalidArgumentException
-     */
     public function testConstructorThrowsExceptionByInvalidParameters()
     {
-        $dateRange = new DateRange(array(), array());
+        $this->expectException(Exception\InvalidArgumentException::class);
+        new DateRange(array(), array());
     }
 
-    /**
-     * @expectedException \FaDoe\Date\Exception\InvalidArgumentException
-     */
     public function testThrowExceptionIfSetNotADateObject()
     {
+        $this->expectException(Exception\InvalidArgumentException::class);
         $dateRange = new DateRange();
         $dateRange->setTo(null);
     }
@@ -149,20 +144,16 @@ class DateRangeTest extends TestCase
         $this->assertEquals(0, $dateRange->key());
     }
 
-    /**
-     * @expectedException \FaDoe\Date\Exception\InvalidArgumentException
-     */
     public function testOffsetSetThrowsException()
     {
+        $this->expectException(Exception\InvalidArgumentException::class);
         $dateRange = new DateRange();
         $dateRange->offsetSet(0, '2014-04-13');
     }
 
-    /**
-     * @expectedException \FaDoe\Date\Exception\InvalidArgumentException
-     */
     public function testOffsetUnsetThrowsException()
     {
+        $this->expectException(Exception\InvalidArgumentException::class);
         $dateRange = new DateRange('2014-04-12', '2014-04-13');
         $dateRange->offsetUnset(0);
     }

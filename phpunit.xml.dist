@@ -2,7 +2,7 @@
 <phpunit bootstrap="vendor/autoload.php">
     <testsuites>
         <testsuite name="FaDoe\Date Testsuite">
-            <directory>./tests</directory>
+            <directory>test</directory>
         </testsuite>
     </testsuites>
 </phpunit>

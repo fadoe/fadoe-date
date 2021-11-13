@@ -1,6 +1,6 @@
 {
     "name": "fadoe/date",
-    "description": "Library that extends the PHP date class",
+    "description": "Library to handle PHP DateTime objects",
     "minimum-stability": "stable",
     "type": "library",
     "homepage": "https://github.com/fadoe/fadoe-date",
@@ -11,7 +11,8 @@
         }
     ],
     "require": {
-        "php": ">=7.0.0"
+        "php": "^8.0",
+        "phpunit/phpunit": "^9.5"
     },
     "autoload": {
         "psr-4": {
@@ -20,7 +21,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "FaDoeTest\\Date\\": "tests/"
+            "FaDoe\\Date\\": "test/"
         }
     }
 }
