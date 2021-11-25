@@ -11,8 +11,9 @@ final class MonthYearTest extends TestCase
     {
         $now = date('Y-m');
         $date = MonthYear::create();
-        $this->assertEquals($now, $date->toString());
         $this->assertInstanceOf(DateTimeImmutableAwareInterface::class, $date);
+        $this->assertEquals(date('Y-m-01 00:00:00'), $date->toDateTimeImmutable()->format('Y-m-d H:i:s'));
+        $this->assertEquals($now, $date->toString());
     }
 
     public function testCreateFromMonthAndYear(): void
@@ -28,6 +29,7 @@ final class MonthYearTest extends TestCase
     public function testGetLastDate(): void
     {
         $date = MonthYear::createFromYearAndMonth(2021, 2);
+        $this->assertEquals('2021-02-01 00:00:00', $date->toDateTimeImmutable()->format('Y-m-d H:i:s'));
         $this->assertEquals('2021-02-28 00:00:00', $date->getLastDate()->format('Y-m-d H:i:s'));
     }
 

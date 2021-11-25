@@ -24,7 +24,7 @@ final class MonthYear implements JsonSerializable, Stringable, DateTimeImmutable
             throw Exception\InvalidArgumentException::fromMonth($month);
         }
 
-        return new self(DateTimeImmutable::createFromFormat('Y-m-d H:i:s', "$year-$month-01 00:00:00"));
+        return new self(DateTimeImmutable::createFromFormat('Y-m', "$year-$month"));
     }
 
     public function getLastDate(): DateTimeImmutable
@@ -54,6 +54,11 @@ final class MonthYear implements JsonSerializable, Stringable, DateTimeImmutable
 
     private function __construct(DateTimeImmutable $dateTimeImmutable)
     {
+        $dateTimeImmutable = $dateTimeImmutable->setDate(
+            (int)$dateTimeImmutable->format('Y'),
+            (int)$dateTimeImmutable->format('m'),
+            1
+        )->setTime(0,0);
         $this->dateTime = $dateTimeImmutable;
     }
 }
