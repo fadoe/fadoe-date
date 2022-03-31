@@ -9,7 +9,7 @@ class InvalidArgumentException extends \InvalidArgumentException implements Exce
      *
      * @return InvalidArgumentException
      */
-    public static function fromInvalidType(string $type)
+    public static function fromInvalidType(string $type): self
     {
         return new self(sprintf('Parameter must be a string or DateTime object, %s given.', $type));
     }
