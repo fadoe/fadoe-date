@@ -1,10 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FaDoe\Date;
 
+use DateInterval;
+use DateTime;
+use DateTimeInterface;
+use FaDoe\Date\Exception\InvalidArgumentException;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
-class DateRangeTest extends TestCase
+#[CoversClass(DateRange::class)]
+#[UsesClass(InvalidArgumentException::class)]
+final class DateRangeTest extends TestCase
 {
     public function testRangeClassWithNoParameters()
     {
@@ -19,8 +29,8 @@ class DateRangeTest extends TestCase
 
     public function testDateTimeObjectsInRightOrder()
     {
-        $date1 = new \DateTime('2013-09-01');
-        $date2 = new \DateTime('2013-09-30');
+        $date1 = new DateTime('2013-09-01');
+        $date2 = new DateTime('2013-09-30');
 
         $dateRange = new DateRange($date1, $date2);
 
@@ -31,23 +41,22 @@ class DateRangeTest extends TestCase
 
         $dates = $dateRange->getDates();
 
-        $this->assertTrue(is_array($dates));
         $this->assertCount(30, $dates);
         $this->assertEquals($date1, $dates[0]);
 
         foreach ($dates as $date) {
-            $this->assertInstanceOf(\DateTimeInterface::class, $date);
+            $this->assertInstanceOf(DateTimeInterface::class, $date);
         }
 
         $this->assertEquals($date2, end($dates));
 
-        $this->assertInstanceOf(\DateInterval::class, $dateRange->getDateInterval());
+        $this->assertInstanceOf(DateInterval::class, $dateRange->getDateInterval());
     }
 
     public function testDateTimeObjectsInInvertedOrder()
     {
-        $date1 = new \DateTime('2013-09-01');
-        $date2 = new \DateTime('2013-09-30');
+        $date1 = new DateTime('2013-09-01');
+        $date2 = new DateTime('2013-09-30');
 
         $dateRange = new DateRange($date2, $date1);
 
@@ -58,12 +67,11 @@ class DateRangeTest extends TestCase
 
         $dates = $dateRange->getDates();
 
-        $this->assertTrue(is_array($dates));
         $this->assertCount(30, $dates);
         $this->assertEquals($date2, $dates[0]);
 
         foreach ($dates as $date) {
-            $this->assertInstanceOf('\DateTime', $date);
+            $this->assertInstanceOf(DateTime::class, $date);
         }
 
         $this->assertEquals($date1, end($dates));
@@ -71,7 +79,7 @@ class DateRangeTest extends TestCase
 
     public function testFromAndToAreEqualDateTimeObjects()
     {
-        $date1 = new \DateTime('2013-09-01');
+        $date1 = new DateTime('2013-09-01');
 
         $dateRange = new DateRange($date1, $date1);
 
@@ -82,7 +90,6 @@ class DateRangeTest extends TestCase
 
         $dates = $dateRange->getDates();
 
-        $this->assertTrue(is_array($dates));
         $this->assertCount(1, $dates);
         $this->assertEquals($date1, $dates[0]);
     }
@@ -94,8 +101,8 @@ class DateRangeTest extends TestCase
 
         $dateRange = new DateRange($date1, $date2);
 
-        $this->assertEquals(new \DateTime($date1), $dateRange->getFrom());
-        $this->assertEquals(new \DateTime($date2), $dateRange->getTo());
+        $this->assertEquals(new DateTime($date1), $dateRange->getFrom());
+        $this->assertEquals(new DateTime($date2), $dateRange->getTo());
     }
 
     public function testSetterAndGetter()
@@ -108,8 +115,8 @@ class DateRangeTest extends TestCase
         $dateRange->setFrom($date1);
         $dateRange->setTo($date2);
 
-        $this->assertEquals(new \DateTime($date1), $dateRange->getFrom());
-        $this->assertEquals(new \DateTime($date2), $dateRange->getTo());
+        $this->assertEquals(new DateTime($date1), $dateRange->getFrom());
+        $this->assertEquals(new DateTime($date2), $dateRange->getTo());
     }
 
     public function testConstructorThrowsExceptionByInvalidParameters()

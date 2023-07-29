@@ -1,48 +1,31 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FaDoe\Date;
 
+use DateTime;
+use DateTimeInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-class CompareTest extends TestCase
+#[CoversClass(Compare::class)]
+final class CompareTest extends TestCase
 {
-    /**
-     * @var Compare
-     */
-    private $compare;
-
-    /**
-     * @var \DateTimeInterface
-     */
-    private $compareDate;
-
-    /**
-     * @var \DateTimeInterface
-     */
-    private $betweenDateLower;
-
-    /**
-     * @var \DateTimeInterface
-     */
-    private $betweenDateGreater;
-
-    /**
-     * @var \DateTimeInterface
-     */
-    private $dateLower;
-
-    /**
-     * @var \DateTimeInterface
-     */
-    private $dateGreater;
+    private Compare $compare;
+    private DateTimeInterface $compareDate;
+    private DateTimeInterface $betweenDateLower;
+    private DateTimeInterface $betweenDateGreater;
+    private DateTimeInterface $dateLower;
+    private DateTimeInterface $dateGreater;
 
     protected function setUp(): void
     {
-        $this->compareDate = new \DateTime('2014-04-13 12:00:00');
-        $this->betweenDateLower = new \DateTime('2014-04-13 10:00:00');
-        $this->betweenDateGreater = new \DateTime('2014-04-13 13:00:00');
-        $this->dateLower = new \DateTime('2014-04-13 09:00:00');
-        $this->dateGreater = new \DateTime('2014-04-13 14:00:00');
+        $this->compareDate = new DateTime('2014-04-13 12:00:00');
+        $this->betweenDateLower = new DateTime('2014-04-13 10:00:00');
+        $this->betweenDateGreater = new DateTime('2014-04-13 13:00:00');
+        $this->dateLower = new DateTime('2014-04-13 09:00:00');
+        $this->dateGreater = new DateTime('2014-04-13 14:00:00');
 
         $this->compare = new Compare($this->compareDate);
     }
@@ -51,7 +34,7 @@ class CompareTest extends TestCase
     {
         $this->assertFalse($this->compare->sameAs($this->betweenDateLower));
         $this->assertFalse($this->compare->sameAs($this->betweenDateGreater));
-        $equalDateTime = new \DateTime('2014-04-13 12:00:00');
+        $equalDateTime = new DateTime('2014-04-13 12:00:00');
         $this->assertFalse($this->compare->sameAs($equalDateTime));
         $this->assertTrue($this->compare->sameAs($this->compareDate));
     }
@@ -61,7 +44,7 @@ class CompareTest extends TestCase
         $this->assertFalse($this->compare->equalTo($this->betweenDateLower));
         $this->assertFalse($this->compare->equalTo($this->betweenDateGreater));
         $this->assertTrue($this->compare->equalTo($this->compareDate));
-        $equalDateTime = new \DateTime('2014-04-13 12:00:00');
+        $equalDateTime = new DateTime('2014-04-13 12:00:00');
         $this->assertTrue($this->compare->equalTo($equalDateTime));
     }
 
